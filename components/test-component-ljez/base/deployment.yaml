@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/created-by: application-service
+    app.kubernetes.io/instance: test-component-ljez
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: test-component-ljez
+    app.kubernetes.io/part-of: test-app-bspg
+  name: test-component-ljez
+  namespace: build-e2e-hacbs-yzcl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: test-component-ljez
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: test-component-ljez
+    spec:
+      containers:
+      - image: quay.io/redhat-appstudio-qe/test-images:2fe6329c26664e22b285737fb29c1f6c
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        name: container-image
+        ports:
+        - containerPort: 8081
+        readinessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          tcpSocket:
+            port: 8081
+        resources: {}
+status: {}
